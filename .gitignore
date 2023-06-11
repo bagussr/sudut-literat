@@ -1,0 +1,7 @@
+.env
+
+gin-bin.exe
+
+database.db
+
+go.sum
