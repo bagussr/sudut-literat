@@ -1,4 +1,140 @@
+definitions:
+  request.UserRequest:
+    properties:
+      confirm_password:
+        type: string
+      email:
+        example: email@test.com
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - confirm_password
+    - email
+    - name
+    - password
+    type: object
+  response.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      status:
+        type: string
+    type: object
+  response.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /user:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: bad request
+          schema:
+            type: string
+      summary: user routes
+      tags:
+      - users
+  /user/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.UserResponse'
+              type: object
+        "400":
+          description: bad request
+          schema:
+            type: string
+      summary: find user by id
+      tags:
+      - users
+  /user/list:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.UserResponse'
+                  type: array
+              type: object
+        "400":
+          description: bad request
+          schema:
+            type: string
+      summary: find all user
+      tags:
+      - users
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: string
+        in: body
+        name: example
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: bad request
+          schema:
+            type: string
+      summary: register user
+      tags:
+      - users
 swagger: "2.0"
